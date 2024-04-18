@@ -8,23 +8,43 @@
 import UIKit
 import Foundation
 class ViewController: UIViewController, UITableViewDataSource {
-    private var stocks: [stock] = [] 
+    private var stocks: [stock] = []
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return stocks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "Row \(indexPath.row)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "stockCell", for: indexPath) as! stockCell
+        let stock = stocks[indexPath.row]
+//        cell.textLabel?.text = stock.T
+        let priceChange =  (stock.c - stock.o)
+        let percentageChange =  String(format: "%.2f", (priceChange/stock.o)*100)
+        cell.stockTicker.text = "$\(stock.T)"
+        cell.stockVolume.text = "\(stock.v)"
+        cell.stockPrice.text = "$\(stock.c)"
+        if (priceChange) > 0 {
+            cell.dailyChange.text = "+"+currencyDecimalConv(val: priceChange)+" "+"(+"+percentageChange+"%)"
+        }
+        else{
+            cell.dailyChange.text = currencyDecimalConv(val: priceChange)+" ("+percentageChange+"%)"
+        }
         return cell
     }
-    func getDate() -> String{
+    
+    func currencyDecimalConv(val: Double) -> String{
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: "en_us")
+        return formatter.string(from: NSNumber(value: val)) ?? ""
+    }
+    
+    func getDate(day: Int) -> String{ //return 2 days before the current day because API won't fetch real time data as a free tier
         let currentDate = Date()
         let dateformatter = DateFormatter()
         var dateComponent = DateComponents()
         let calendar = Calendar.current
         
-        dateComponent.day = -1
+        dateComponent.day = day
         guard let pastDate = calendar.date(byAdding: dateComponent, to: currentDate) else {
             return "Date Error"
         }
@@ -34,7 +54,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
     func fetchData(){
         let apiKey = "oXZyWKJSMmfQOoi1t2eTiXSb4sXRaXvU"
-        let dateString =  getDate() //"2024-04-15"
+        let dateString =  getDate(day:-1) //"2024-04-15"
         let urlString = "https://api.polygon.io/v2/aggs/grouped/locale/us/market/stocks/\(dateString)?adjusted=true&apiKey=\(apiKey)"
         guard let url = URL(string: urlString) else{
             fatalError("Invalid URL")
@@ -53,15 +73,18 @@ class ViewController: UIViewController, UITableViewDataSource {
                 return
             }
             do {
-                        let decoder = JSONDecoder()
-                        var aggregates = try decoder.decode(Aggregates.self, from: data)
-                        // Sort the results by volume in descending order right after decoding
-                        aggregates.results.sort(by: { $0.v > $1.v })
-
-                        // Print the sorted results
-                        for aggregate in aggregates.results {
-                            print("Ticker: \(aggregate.T), Volume: \(aggregate.v)")
-                        }
+                let decoder = JSONDecoder()
+                var aggregates = try decoder.decode(Aggregates.self, from: data)
+                DispatchQueue.main.async { [weak self] in
+                    aggregates.results.sort(by: { $0.v > $1.v })
+                    for aggregate in aggregates.results {
+                        print("Ticker: \(aggregate.T), Volume: \(aggregate.v)")
+                    }
+                    let stocks = aggregates.results
+                    self?.stocks = stocks
+                    self?.tableview.reloadData()
+                    
+                }
                     } catch {
                         // Correct catch block syntax
                         print("Decoding error: \(error)")
@@ -76,7 +99,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         tableview.dataSource = self
         fetchData()
-//        print(getDate())
+        print(getDate())
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
