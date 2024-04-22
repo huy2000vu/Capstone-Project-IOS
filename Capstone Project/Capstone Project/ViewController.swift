@@ -15,6 +15,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stockCell", for: indexPath) as! stockCell
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        cell.addGestureRecognizer(swipeGesture)
         let stock = stocks[indexPath.row]
 //        cell.textLabel?.text = stock.T
         let priceChange =  (stock.c - stock.o)
@@ -33,6 +35,25 @@ class ViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer)
+    {
+        if let cell = gesture.view as? UITableViewCell{
+            // Get the index path of the cell
+            if let indexPath = tableview.indexPath(for: cell) {
+                // Perform actions based on the swipe direction
+                switch gesture.direction {
+                case .left:
+                    // Handle left swipe
+                    print("Left swipe detected for cell at index path: \(indexPath)")
+                case .right:
+                    // Handle right swipe
+                    print("Right swipe detected for cell at index path: \(indexPath)")
+                default:
+                    break
+                }
+            }
+        }
+    }
 
     
     func currencyDecimalConv(val: Double) -> String{
