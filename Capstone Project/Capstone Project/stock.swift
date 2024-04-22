@@ -17,4 +17,5 @@ struct stock: Decodable{
     let c: Double // Close
     let h: Double // High
     let l: Double // Low
+//    let prevClose: Double //close from the previous day
 }

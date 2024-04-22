@@ -24,12 +24,16 @@ class ViewController: UIViewController, UITableViewDataSource {
         cell.stockPrice.text = "$\(stock.c)"
         if (priceChange) > 0 {
             cell.dailyChange.text = "+"+currencyDecimalConv(val: priceChange)+" "+"(+"+percentageChange+"%)"
+            cell.backgroundColor = UIColor(red: 0.62, green: 0.87, blue: 0.76, alpha: 1.0)
         }
         else{
             cell.dailyChange.text = currencyDecimalConv(val: priceChange)+" ("+percentageChange+"%)"
+            cell.backgroundColor = UIColor(red: 0.86, green: 0.08, blue: 0.24, alpha: 1.0)
         }
         return cell
     }
+    
+
     
     func currencyDecimalConv(val: Double) -> String{
         let formatter = NumberFormatter()
@@ -45,13 +49,25 @@ class ViewController: UIViewController, UITableViewDataSource {
         let calendar = Calendar.current
         
         dateComponent.day = day
-        guard let pastDate = calendar.date(byAdding: dateComponent, to: currentDate) else {
+        
+        guard var adjustedDate = calendar.date(byAdding: dateComponent, to: currentDate) else {
             return "Date Error"
         }
+        if let weekday = calendar.dateComponents([.weekday], from: adjustedDate).weekday{
+            switch weekday {
+            case 1: // Sunday
+                adjustedDate = calendar.date(byAdding: .day, value: -2, to: adjustedDate)!
+            case 7: // Saturday
+                adjustedDate = calendar.date(byAdding: .day, value: -1, to: adjustedDate)!
+            default:
+                break // No adjustment needed if it's not a weekend
+            }
+        }
         dateformatter.dateFormat = "yyyy-MM-dd"
-        let formattedDate = dateformatter.string(from: pastDate)
+        let formattedDate = dateformatter.string(from: adjustedDate)
         return formattedDate
     }
+    
     func fetchData(){
         let apiKey = "oXZyWKJSMmfQOoi1t2eTiXSb4sXRaXvU"
         let dateString =  getDate(day:-1) //"2024-04-15"
@@ -99,7 +115,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         tableview.dataSource = self
         fetchData()
-        print(getDate())
+        print(getDate(day:-1))
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
