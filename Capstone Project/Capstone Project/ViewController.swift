@@ -38,18 +38,30 @@ class ViewController: UIViewController, UITableViewDataSource {
     @objc func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer)
     {
         if let cell = gesture.view as? UITableViewCell{
-            // Get the index path of the cell
-            if let indexPath = tableview.indexPath(for: cell) {
-                // Perform actions based on the swipe direction
-                switch gesture.direction {
-                case .left:
-                    // Handle left swipe
-                    print("Left swipe detected for cell at index path: \(indexPath)")
-                case .right:
-                    // Handle right swipe
-                    print("Right swipe detected for cell at index path: \(indexPath)")
-                default:
-                    break
+            if let indexPath = tableview.indexPath(for: cell)
+            {
+                let stock = stocks[indexPath.row]
+                // Get the index path of the cell
+                if let indexPath = tableview.indexPath(for: cell) {
+                    // Perform actions based on the swipe direction
+                    switch gesture.direction {
+                    case .left:
+                        // Handle left swipe
+                        print("Left swipe detected for cell at index path: \(indexPath)")
+                    case .right:
+                        // Handle right swipe
+                        stock.addToWatchList()
+                        print("\(stock.T) was added to watch list")
+                        UIView.animate(withDuration: 0.3, animations: {
+                            cell.transform =  CGAffineTransform(translationX: cell.bounds.width, y: 0)
+                        }) {(_) in  UIView.animate(withDuration: 0.3) {
+                            cell.transform = .identity
+                        } }
+                      
+                    default:
+                        break
+                    }
+                    
                 }
             }
         }
