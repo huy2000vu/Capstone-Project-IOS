@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 class ViewController: UIViewController, UITableViewDataSource {
     private var stocks: [stock] = []
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stocks.count
     }
