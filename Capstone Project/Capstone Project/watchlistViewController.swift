@@ -32,6 +32,8 @@ class WatchlistViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stockCell", for: indexPath) as! stockCell
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        cell.addGestureRecognizer(swipeGesture)
         let stock = watchlist[indexPath.row]
         let priceChange =  (stock.c - stock.o)
         let percentageChange =  String(format: "%.2f", (priceChange/stock.o)*100)
@@ -53,7 +55,7 @@ class WatchlistViewController: UIViewController, UITableViewDataSource {
         {
             if let cell = gesture.view as? UITableViewCell{
                 if let indexPath = tableView.indexPath(for: cell)
-                {
+                {   
                     let stock = watchlist[indexPath.row]
                     // Get the index path of the cell
                     if let indexPath = tableView.indexPath(for: cell) {
@@ -61,11 +63,14 @@ class WatchlistViewController: UIViewController, UITableViewDataSource {
                         switch gesture.direction {
                         case .left:
                             // Handle left swipe
-                            print("Left swipe detected for cell at index path: \(indexPath)")
+                            print("\(stock.T) was removed from watchlist")
+//                            stock.removeFromWatchList()
                         case .right:
                             // Handle right swipe
-                            stock.addToWatchList()
-                            print("\(stock.T) was added to watch list")
+                            stock.removeFromWatchList()
+                            watchlist.remove(at: indexPath.row)
+                            tableView.deleteRows(at: [indexPath], with: .left)
+                            print("\(stock.T) was removed from watchlist")
                             UIView.animate(withDuration: 0.3, animations: {
                                 cell.transform =  CGAffineTransform(translationX: cell.bounds.width, y: 0)
                             }) {(_) in  UIView.animate(withDuration: 0.3) {
