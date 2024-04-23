@@ -15,7 +15,7 @@
 		2E4AB5772BCDC004006CF3F5 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 2E4AB5762BCDC004006CF3F5 /* Base */; };
 		2E4AB57F2BCDDB23006CF3F5 /* stockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4AB57E2BCDDB23006CF3F5 /* stockCell.swift */; };
 		2E4AB5812BCDE0C4006CF3F5 /* stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4AB5802BCDE0C4006CF3F5 /* stock.swift */; };
-		2E8E44A12BD7657600333219 /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E44A02BD7657600333219 /* WatchlistViewController.swift */; };
+		2E7949B32BD870BF000393D5 /* WatchlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7949B22BD870BF000393D5 /* WatchlistViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,7 @@
 		2E4AB5782BCDC004006CF3F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E4AB57E2BCDDB23006CF3F5 /* stockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stockCell.swift; sourceTree = "<group>"; };
 		2E4AB5802BCDE0C4006CF3F5 /* stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stock.swift; sourceTree = "<group>"; };
-		2E8E44A02BD7657600333219 /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
+		2E7949B22BD870BF000393D5 /* WatchlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +71,7 @@
 				2E4AB5752BCDC004006CF3F5 /* LaunchScreen.storyboard */,
 				2E4AB5782BCDC004006CF3F5 /* Info.plist */,
 				2E4AB57E2BCDDB23006CF3F5 /* stockCell.swift */,
-				2E8E44A02BD7657600333219 /* WatchlistViewController.swift */,
+				2E7949B22BD870BF000393D5 /* WatchlistViewController.swift */,
 			);
 			path = "Capstone Project";
 			sourceTree = "<group>";
@@ -147,7 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E8E44A12BD7657600333219 /* WatchlistViewController.swift in Sources */,
+				2E7949B32BD870BF000393D5 /* WatchlistViewController.swift in Sources */,
 				2E4AB56F2BCDC001006CF3F5 /* ViewController.swift in Sources */,
 				2E4AB56B2BCDC001006CF3F5 /* AppDelegate.swift in Sources */,
 				2E4AB5812BCDE0C4006CF3F5 /* stock.swift in Sources */,
