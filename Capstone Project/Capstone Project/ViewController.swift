@@ -58,7 +58,6 @@ class ViewController: UIViewController, UITableViewDataSource {
                         }) {(_) in  UIView.animate(withDuration: 0.3) {
                             cell.transform = .identity
                         } }
-                      
                     default:
                         break
                     }
@@ -67,7 +66,6 @@ class ViewController: UIViewController, UITableViewDataSource {
             }
         }
     }
-
     
     func currencyDecimalConv(val: Double) -> String{
         let formatter = NumberFormatter()
@@ -87,6 +85,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         guard var adjustedDate = calendar.date(byAdding: dateComponent, to: currentDate) else {
             return "Date Error"
         }
+        
         if let weekday = calendar.dateComponents([.weekday], from: adjustedDate).weekday{
             switch weekday {
             case 1: // Sunday
